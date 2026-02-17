@@ -42,8 +42,17 @@ ENV NODE_ENV=production
 # Without this, the browser dashboard cannot complete the device pairing handshake
 # because there is no local operator to approve the pairing request.
 RUN mkdir -p /home/node/.openclaw && \
-    echo '{ gateway: { controlUi: { dangerouslyDisableDeviceAuth: true } } }' \
-    > /home/node/.openclaw/openclaw.json
+    echo '{\
+  gateway: { controlUi: { dangerouslyDisableDeviceAuth: true } },\
+  channels: {\
+    telegram: {\
+      enabled: true,\
+      dmPolicy: "open",\
+      allowFrom: ["*"],\
+      groups: { "*": { requireMention: true } },\
+    },\
+  },\
+}' > /home/node/.openclaw/openclaw.json
 
 RUN chown -R node:node /app /home/node/.openclaw
 USER node
