@@ -35,9 +35,11 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/openclaw.mjs ./openclaw.mjs
 COPY --from=builder /app/scripts ./scripts
-COPY --from=builder /app/extensions ./extensions
+# Only copy telegram extension (not all 38 extensions) to avoid OOM
+COPY --from=builder /app/extensions/telegram ./extensions/telegram
 
 ENV NODE_ENV=production
+ENV NODE_OPTIONS="--max-old-space-size=512"
 
 # Create gateway config and agent workspace
 RUN mkdir -p /home/node/.openclaw/workspace
