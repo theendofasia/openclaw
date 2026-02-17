@@ -49,6 +49,11 @@ RUN mkdir -p /home/node/.openclaw/workspace
 # Gateway config: bypass device pairing + enable Telegram + use Gemini
 RUN echo '{\
   gateway: { controlUi: { dangerouslyDisableDeviceAuth: true } },\
+  models: {\
+    providers: {\
+      google: { apiKey: "GEMINI_API_KEY" },\
+    },\
+  },\
   agents: {\
     defaults: {\
       model: { primary: "google/gemini-2.5-flash" },\
