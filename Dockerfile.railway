@@ -38,7 +38,16 @@ COPY --from=builder /app/scripts ./scripts
 
 ENV NODE_ENV=production
 
-RUN chown -R node:node /app
+# Create gateway config to bypass device pairing for remote Control UI access.
+# Without this, the browser dashboard cannot complete the device pairing handshake
+# because there is no local operator to approve the pairing request.
+RUN mkdir -p /home/node/.openclaw && \
+    echo '{ gateway: { controlUi: { dangerouslyDisableDeviceAuth: true } } }' \
+    > /home/node/.openclaw/openclaw.json
+
+RUN chown -R node:node /app /home/node/.openclaw
 USER node
+
+ENV HOME=/home/node
 
 CMD ["node", "openclaw.mjs", "gateway", "--allow-unconfigured", "--bind", "lan", "--port", "3000"]
