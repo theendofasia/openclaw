@@ -37,6 +37,8 @@ COPY --from=builder /app/openclaw.mjs ./openclaw.mjs
 COPY --from=builder /app/scripts ./scripts
 # Only copy telegram extension (not all 38 extensions) to avoid OOM
 COPY --from=builder /app/extensions/telegram ./extensions/telegram
+# Workspace templates required by the gateway at runtime
+COPY --from=builder /app/docs/reference/templates ./docs/reference/templates
 
 ENV NODE_ENV=production
 ENV NODE_OPTIONS="--max-old-space-size=512"
