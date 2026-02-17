@@ -21,6 +21,7 @@ ENV OPENCLAW_PREFER_PNPM=1
 RUN pnpm ui:build
 
 # Remove dev dependencies to slim down
+ENV CI=true
 RUN pnpm prune --prod
 
 # Stage 2: Runtime (slim image)
