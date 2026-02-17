@@ -47,6 +47,9 @@ vendor/
 .claude/
 *.md
 
+!deploy/workspace/**/*.md
+!docs/reference/templates/**/*.md
+
 !apps/shared/
 !apps/shared/OpenClawKit/
 !apps/shared/OpenClawKit/Tools/
