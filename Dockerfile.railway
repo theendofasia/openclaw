@@ -74,4 +74,4 @@ USER node
 
 ENV HOME=/home/node
 
-CMD ["node", "openclaw.mjs", "gateway", "--allow-unconfigured", "--bind", "lan", "--port", "3000"]
+CMD ["sh", "-c", "node openclaw.mjs gateway --allow-unconfigured --bind lan --port ${PORT:-3000}"]
