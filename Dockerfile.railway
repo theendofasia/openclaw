@@ -38,11 +38,11 @@ COPY --from=builder /app/scripts ./scripts
 
 ENV NODE_ENV=production
 
-# Create gateway config to bypass device pairing for remote Control UI access.
-# Without this, the browser dashboard cannot complete the device pairing handshake
-# because there is no local operator to approve the pairing request.
-RUN mkdir -p /home/node/.openclaw && \
-    echo '{\
+# Create gateway config and agent workspace
+RUN mkdir -p /home/node/.openclaw/workspace
+
+# Gateway config: bypass device pairing + enable Telegram channel
+RUN echo '{\
   gateway: { controlUi: { dangerouslyDisableDeviceAuth: true } },\
   channels: {\
     telegram: {\
@@ -53,6 +53,10 @@ RUN mkdir -p /home/node/.openclaw && \
     },\
   },\
 }' > /home/node/.openclaw/openclaw.json
+
+# Copy agent workspace files (AGENTS.md, SOUL.md, TOOLS.md)
+# These define the agent's personality, rules, and specialist capabilities
+COPY deploy/workspace/ /home/node/.openclaw/workspace/
 
 RUN chown -R node:node /app /home/node/.openclaw
 USER node
